@@ -1,6 +1,10 @@
 pyrogram==2.0.106
-TgCrypto==1.2.5
+tgcrypto==1.2.5
 py-tgcalls==0.9.7
-yt-dlp==2024.8.6
-aiohttp==3.9.5
-aiofiles==23.2.1
+yt-dlp
+ffmpeg-python
+motor==3.3.2
+pymongo==4.6.1
+dnspython
+aiohttp
+aiofiles
