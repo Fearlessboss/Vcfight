@@ -39,7 +39,7 @@ from pymongo import MongoClient
 # 🔧 CONFIGURATION
 # ═══════════════════════════════════════════════════════════════════════════════
 OWNER_ID = 7661825494
-BOT_TOKEN = "7845373810:AAH5buiFgaqEluB2nqv6zB2J371QNMtGago"
+BOT_TOKEN = "7845373810:AAFQlhmmDstNi48ZJAbruihSrM4YWIzOt2U"
 API_ID = 33628258
 API_HASH = "0850762925b9c1715b9b122f7b753128"
 
