@@ -36,33 +36,47 @@ from pytgcalls.types.input_stream import AudioPiped
 from pytgcalls.types.input_stream.quality import HighQualityAudio
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# ⚙️ CONFIG
+# 🔧 CONFIGURATION
 # ═══════════════════════════════════════════════════════════════════════════════
-API_ID       = int(os.getenv("API_ID", "0"))
-API_HASH     = os.getenv("API_HASH", "")
-BOT_TOKEN    = os.getenv("BOT_TOKEN", "")
-MONGO_URI    = os.getenv("MONGO_URI", "")
-OWNER_ID     = int(os.getenv("OWNER_ID", "0"))
-CO_OWNER_ID  = int(os.getenv("CO_OWNER_ID", "0"))
+def _get_env(name, default=None, cast=str, required=False):
+    val = os.environ.get(name, default)
+    if required and (val is None or val == ""):
+        print(f"❌ FATAL: Environment variable {name} is required but not set.")
+        sys.exit(1)
+    if val is None:
+        return None
+    try:
+        return cast(val)
+    except Exception:
+        return val
 
-VOLUME_BOOST = float(os.getenv("VOLUME_BOOST", "4.0"))
-YT_COOKIES   = os.getenv("YT_COOKIES", "/app/cookies.txt")  # Put cookies file here
-USER_AGENT   = (
-    "Mozilla/5.0 (Linux; Android 13; SM-S908B) "
+BOT_TOKEN   = _get_env("BOT_TOKEN", required=True)
+API_ID      = _get_env("API_ID", default="33628258", cast=int)
+API_HASH    = _get_env("API_HASH", default="0850762925b9c1715b9b122f7b753128")
+MONGO_URL   = _get_env(
+    "MONGO_URL",
+    default="mongodb+srv://moderatorhelperorg_db_user:nze86usap2dYthZN@cluster0.uokrixs.mongodb.net/mydatabase?retryWrites=true&w=majority"
+)
+OWNER_ID     = _get_env("OWNER_ID",    default="7661825494", cast=int)
+CO_OWNER_ID  = _get_env("CO_OWNER_ID", default="6980326908", cast=int)
+OWNERS       = {OWNER_ID, CO_OWNER_ID}
+
+NUBCODER_TOKEN = _get_env("NUBCODER_TOKEN", default="4HBcMS072p")
+NUBCODER_API   = f"http://api.nubcoder.com/info?token={NUBCODER_TOKEN}&q={{}}"
+
+VOLUME_BOOST = _get_env("VOLUME_BOOST", default="4.0", cast=float)
+YT_COOKIES   = _get_env("YT_COOKIES", default="/app/cookies/cookies.txt")
+
+USER_AGENT = (
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
     "AppleWebKit/537.36 (KHTML, like Gecko) "
-    "Chrome/120.0.0.0 Mobile Safari/537.36"
+    "Chrome/120.0.0.0 Safari/537.36"
 )
 
-# Multiple stream API fallbacks (added more for redundancy)
-NUBCODER_API   = "https://nubcoder.api/yt/{0}"   # placeholder — replace with your real one
-JIOSAAVN_API   = "https://saavn.dev/api/search/songs?query={0}&limit=1"
-INVIDIOUS_INSTANCES = [
-    "https://inv.nadeko.net",
-    "https://invidious.fdn.fr",
-    "https://yewtu.be",
-]
-
-OWNERS = {OWNER_ID, CO_OWNER_ID} - {0}
+Path("/tmp/downloads").mkdir(exist_ok=True, parents=True)
+Path("/app/sessions").mkdir(exist_ok=True, parents=True)
+Path("/app/data").mkdir(exist_ok=True, parents=True)
+Path("/app/cookies").mkdir(exist_ok=True, parents=True)
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # 📝 LOGGING
