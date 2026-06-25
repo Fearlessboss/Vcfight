@@ -49,24 +49,34 @@ from pymongo import MongoClient
 # ═══════════════════════════════════════════════════════════════════════════════
 # ⚙️  CONFIG  (same defaults as old script — env vars override)
 # ═══════════════════════════════════════════════════════════════════════════════
-API_ID        = int(os.getenv("API_ID", "20274208"))
-API_HASH      = os.getenv("API_HASH", "55976c333ea05c2f97aaaca6f29eafff")
-BOT_TOKEN     = os.getenv("BOT_TOKEN", "")
-OWNER_ID      = int(os.getenv("OWNER_ID", "6748828497"))
-CO_OWNER_ID   = int(os.getenv("CO_OWNER_ID", "7563434006"))
-MONGO_URL     = os.getenv("MONGO_URL", "")
-VOLUME_BOOST  = float(os.getenv("VOLUME_BOOST", "4.0"))
-YT_COOKIES    = os.getenv("YT_COOKIES", "/app/cookies.txt")
-NUBCODER_API  = os.getenv("NUBCODER_API", "https://nubcoderyt.vercel.app/yt?query={}")
-INVIDIOUS_URL = os.getenv("INVIDIOUS_URL", "https://invidious.nerdvpn.de")
-PIPED_URL     = os.getenv("PIPED_URL", "https://pipedapi.kavin.rocks")
+BOT_TOKEN   = _get_env("BOT_TOKEN", required=True)
+API_ID      = _get_env("API_ID", default="33628258", cast=int)
+API_HASH    = _get_env("API_HASH", default="0850762925b9c1715b9b122f7b753128")
+MONGO_URL   = _get_env(
+    "MONGO_URL",
+    default="mongodb+srv://moderatorhelperorg_db_user:nze86usap2dYthZN@cluster0.uokrixs.mongodb.net/mydatabase?retryWrites=true&w=majority"
+)
+OWNER_ID     = _get_env("OWNER_ID",    default="7661825494", cast=int)
+CO_OWNER_ID  = _get_env("CO_OWNER_ID", default="6980326908", cast=int)
+OWNERS       = {OWNER_ID, CO_OWNER_ID}
+
+NUBCODER_TOKEN = _get_env("NUBCODER_TOKEN", default="4HBcMS072p")
+NUBCODER_API   = f"http://api.nubcoder.com/info?token={NUBCODER_TOKEN}&q={{}}"
+
+VOLUME_BOOST = _get_env("VOLUME_BOOST", default="4.0", cast=float)
+YT_COOKIES   = _get_env("YT_COOKIES", default="/app/cookies/cookies.txt")
 
 USER_AGENT = (
-    "Mozilla/5.0 (Linux; Android 12; SM-G991B) AppleWebKit/537.36 "
-    "(KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36"
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) "
+    "Chrome/120.0.0.0 Safari/537.36"
 )
 
-OWNERS = {OWNER_ID, CO_OWNER_ID}
+Path("/tmp/downloads").mkdir(exist_ok=True, parents=True)
+Path("/app/sessions").mkdir(exist_ok=True, parents=True)
+Path("/app/data").mkdir(exist_ok=True, parents=True)
+Path("/app/cookies").mkdir(exist_ok=True, parents=True)
+
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # 🪵 LOGGING
